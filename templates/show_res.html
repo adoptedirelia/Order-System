@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find your Restaurant</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/css/res.css">
+
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="#">请选择一个饭店</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if username != none %}
+
+                <li><a href="{% url 'pinfo' %}?&username='{{username}}'&career='{{career}}'"> {{ username }}</a></li>
+
+                
+
+                <li><a href="{% url 'show_order2' %}?&username='{{username}}'&career='{{career}}'"> 订单</a></li>
+                <li><a href="{% url 'check_all' %}?&username='{{username}}'&career='{{career}}'"> 查看所有评论</a></li>
+                {% if career == 'admin' %}
+                <li><a href="{% url 'manage' %}?username='{{username}}'&career='{{career}}'">管理页面</a></li>
+                {% endif %}
+                <li><a href="\login\"> 退出</a></li>
+
+
+
+
+                {% else %}
+                <li><a href="/login/">登录</a></li>
+                <li><a href="/register/">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+  
+  {% for item in data%}
+    <div class="row">
+
+      <img src="/static/res/{{ item.1 }}.jpeg" alt="Restaurant 1" class="restaurant-img">
+      <div class="restaurant-info">
+        <h2 class="restaurant-name">{{ item.1 }}</h2>
+        <p class="restaurant-location">地理位置: {{ item.2 }}</p>
+        <p class="restaurant-location">餐厅电话: {{ item.4 }}</p>
+        <p class="restaurant-rating">评价: {{ item.5 }} &#9733  {% if forloop.counter < 4 %} 🔥🔥🔥 {% endif %}  </p>
+        <p class="restaurant-location">人均消费: {{ item.6 }} 元</p>
+        <p class="restaurant-hours">营业时间: {{ item.7 }} - {{item.8}}</p>
+        <p class="restaurant-hours">特色菜: {{ item.9}}</p>
+
+      </div>
+      <div class="buttons">
+
+        <a href = "{% url 'buy' %}?id='{{ item.0 }}'&username='{{username}}'&career='{{career}}'&res={{item.1}}&res_id={{item.0}}" class="button">进入餐厅</a>
+        <a href= "{% url 'show_comment' %}?id='{{ item.0 }}'&username='{{username}}'&career='{{career}}'" class="button">查看评论</a>
+      </div>
+    </div>
+
+      {% endfor %}
+  </div> 
+
+
+</body>
+</html>

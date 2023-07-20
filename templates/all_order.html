@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+        table {
+            /* 设置表格居中对齐 */
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        td {
+            /* 设置表格单元格中内容居中对齐 */
+
+            text-align: center;
+        }
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="{% url 'tomindex' %}?username='{{username}}'&career='{{career}}'">点餐</a>
+
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if username != none %}
+
+                <li><a href="{% url 'pinfo' %}?&username='{{username}}'&career='{{career}}'"> {{ username }}</a></li>
+                <li><a href="{% url 'show_order2' %}?&username='{{username}}'&career='{{career}}'"> 订单</a></li>
+                <li><a href="{% url 'check_all' %}?&username='{{username}}'&career='{{career}}'"> 查看所有评论</a></li>
+                {% if career == 'admin' %}
+                <li><a href="{% url 'manage' %}?username='{{username}}'&career='{{career}}'">管理页面</a></li>
+                {% endif %}
+                <li><a href="\login\"> 退出</a></li>
+
+
+                {% else %}
+                <li><a href="/login/">登录</a></li>
+                <li><a href="/register/">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 我的订单
+        </div>
+        
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+            
+                <th>订单号</th>
+                <th>餐厅ID</th>
+                <th>菜品详情</th>
+                <th>总价格</th>
+                <th>操作</th>
+            
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in data %}
+            <tr>
+                
+                <th scope="row">{{ forloop.counter }}</th>
+                
+
+                {% for i in item %}
+
+                    {% if forloop.counter == 5 %}
+                        
+                    {% else %}
+
+                        {% if forloop.counter == 3 %}
+                        
+                        <td>
+                        {% for mm in i %}
+                            {{mm}}<br> 
+                        {% endfor %}
+                        </td>
+                        
+
+                        {% else %}
+                        <td>{{ i }}</td>
+                        {% endif %}
+
+                    {% endif %}
+                {% endfor %}
+                <td>
+                    {% if item.4 == 0 %}
+                    <a class="btn btn-primary btn-xs" href = "{% url 'update_order' %}?id='{{ item.0 }}'&username='{{username}}'&career='{{career}}'">接受订单</a>
+                    <a class="btn btn-danger btn-xs" href = "{% url 'delete_order' %}?id='{{ item.0 }}'&username='{{username}}'&career='{{career}}'">删除</a>
+                    {% else %}
+                        <p style="color: green;" > 订单已接受 </p>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+.row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+  }
+  
+  .restaurant-img {
+    width: 350px;
+    height: 200px;
+    object-fit: cover;  
+    border-radius: 4px 0 0 4px;
+  }
+  
+  .restaurant-info {
+    flex: 1;
+    padding: 20px;
+    margin-left: 20px;
+  }
+  
+  .restaurant-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .restaurant-rating {
+    color: #ff9800;
+    font-size: 16px;
+
+  }
+  
+  .restaurant-location,
+  .restaurant-hours {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 40px;
+  }
+  
+  .button {
+    padding: 10px 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin-bottom: 30px;
+  }
+  
+  .button:last-child {
+    margin-bottom: 0;
+  }
+  
+  .button:hover {
+    background-color: #45a049;
+  }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Register</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/static/css/register.css">
+</head>
+
+        <body>
+            <div class="login-form">
+                <h1>Register</h1>
+                <form action="/register_data/" method="POST">
+					{% csrf_token %}
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+					
+					
+					<label for="password">Confirm Password</label>
+                    <input type="password" id="password2" name="password2" placeholder="Enter your password again" required>
+					
+
+					<script>
+						const passwordInput = document.getElementById('password');
+						const confirmPasswordInput = document.getElementById('password2');
+					  
+						function checkPasswords() {
+						  if (passwordInput.value !== confirmPasswordInput.value) {
+							confirmPasswordInput.setCustomValidity('Passwords do not match.');
+						  } else {
+							confirmPasswordInput.setCustomValidity('');
+						  }
+						}
+					  
+						passwordInput.addEventListener('change', checkPasswords);
+						confirmPasswordInput.addEventListener('keyup', checkPasswords);
+					  </script>
+
+					<label for="email">Email:</label>
+					<input type="email" id="email" name="email" placeholder="Enter your Email"required>
+
+					<label for="phone">Telephone:</label>
+					<input type="tel" id="phone" name="phone" placeholder="Enter your Phone number" required>
+	  
+					  <hr>
+	  
+					<label for="fullname">Name:</label>
+					<input type="text" id="fullname" name="fullname" placeholder="Enter your name">
+
+					<label for="gender" class="col-md-4 col-form-label text-md-right">Gender:</label>
+
+					<div class = "radio-gender" style="text-align: center;" display="flex">
+						<label style="display: inline-block;">
+							<input type="radio" id="gender-male" name="gender" value="male"  required>
+							male
+						</label>
+						
+						<label style="display: inline-block;">
+							<input type="radio" id="gender-female" name="gender" value="female"  required>
+							female
+						</label>
+					</div>
+	  
+					<label for="age">Age:</label>
+					<input type="text" id="age" name="age" placeholder="Enter your age" required>
+	  
+					<label for="career">Career:</label>
+						<select class="form-control" name="career" id="career">
+							<option></option>
+							<option selected="selected">--请选择职业--</option>
+							<option >饭店经理</option>
+							<option >厨师</option>
+							<option >学生</option>
+							<option >老师</option>
+							<option >IT人员</option>
+							<option >上班族</option>
+							<option >其他</option>
+					</select>
+
+
+                    <input type="submit" value="Register">
+
+                    <p>Already have an account? <a href="/login">Log in</a></p>
+                </form>
+            </div>
+    </body>
+</html>            

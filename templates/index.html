@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="{% url 'tomindex' %}?username='{{username}}'&career='{{career}}'">点餐业务后台系统</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if username != none %}
+                <li><a> {{ username }}</a></li>
+                {% if career == 'admin' %}
+                <li><a href="{% url 'manage' %}?username='{{username}}'&career='{{career}}'">管理页面</a></li>
+                {% endif %}
+                <li><a href="\login\"> 退出</a></li>
+
+
+                {% else %}
+                <li><a href="/login/">登录</a></li>
+                <li><a href="/register/">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 表单区域</div>
+        <div class="panel-body">
+            <form action = '/showtable/' class="form-inline" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{username}}">
+
+                <div class="form-group">
+                    <label class="sr-only" for="table_name">表名</label>
+                    <input type="text" class="form-control" name="table_name" id="table_name" placeholder="表名">
+
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-save" aria-hidden="true"></i> 查询
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 数据列表
+        </div>
+        
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+            
+              {% for item in model_code %}
+                <th>{{ item.0 }}</th>
+              {% endfor %}
+                <th>操作</th>
+            
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in data %}
+            <tr>
+                
+                <th scope="row">{{ forloop.counter }}</th>
+                {% if modify == 1 %}
+                
+                {% if forloop.counter == index %}
+                
+                <form action = "/modify_data/" method = "POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{username}}">
+                
+                {% for i,item in pack %}
+                <td>
+                  <input type="text" name="{{ item.0 }}" id="{{ item.0 }}" placeholder="{{ item.0 }}" value = "{{ i }}">
+                </td>
+                {% endfor %}
+                <td>
+                    <input class="btn btn-primary btn-xs" type="submit" value="提交">
+                    <input type="hidden" name="index" value="{{ index }}">
+                </td>
+
+                </form>
+
+                {% else %}
+                {% for i in item %}
+                <td>{{ i }}</td>
+                {% endfor %}
+                <td>
+                    <a class="btn btn-primary btn-xs" href = "{% url 'modify' %}?id='{{ item.0 }}'&id2='{{ item.1 }}'&label1='{{ model_code.0.0 }}'&label2='{{ model_code.1.0 }}'&username='{{username}}'" >编辑</a>
+                    <a class="btn btn-danger btn-xs" href = "{% url 'delete' %}?id='{{ item.0 }}'&id2='{{ item.1 }}'&label1='{{ model_code.0.0 }}'&label2='{{ model_code.1.0 }}'&username='{{username}}'">删除</a>
+                </td>
+                {% endif %}
+
+
+                {% else %}
+
+                {% for i in item %}
+                <td>{{ i }}</td>
+                {% endfor %}
+                <td>
+                    <a class="btn btn-primary btn-xs" href = "{% url 'modify' %}?id='{{ item.0 }}'&id2='{{ item.1 }}'&label1='{{ model_code.0.0 }}'&label2='{{ model_code.1.0 }}'&username='{{username}}'" >编辑</a>
+                    <a class="btn btn-danger btn-xs" href = "{% url 'delete' %}?id='{{ item.0 }}'&id2='{{ item.1 }}'&label1='{{ model_code.0.0 }}'&label2='{{ model_code.1.0 }}'&username='{{username}}'">删除</a>
+                </td>
+
+                {% endif %}
+            </tr>
+            {% endfor %}
+
+            {% if add == 1 %}
+            <tr>
+              <form action = "/insert_data/" method = "POST">
+              {% csrf_token %}
+              <input type="hidden" name="username" value="{{username}}">
+
+              <th scope="row">0</th>
+
+              
+              {% for item in model_code %}
+              <td>
+                <input type="text" name="{{ item.0 }}" id="{{ item.0 }}" placeholder="{{ item.0 }}">
+              </td>
+              {% endfor %}
+
+
+              <td>
+                <input class="btn btn-primary btn-xs" type="submit" value="提交">
+              </td>
+            </form>
+            </tr>
+            {% endif %}
+
+            {% if add == 0 %}
+            <tr>
+              <th scope="row">+</th>
+              {% for item in model_code %}
+              <td>
+                
+              </td>
+              {% endfor %}
+              <td>
+                <a class="btn btn-primary btn-xs" href = "{% url 'insert' %}?id='{{ item.0 }}'&username='{{username}}'" >添加</a>
+              </td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+
+    </div>
+    <ul class="pagination">
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+    </ul>
+
+</div>
+
+
+</body>
+</html>
